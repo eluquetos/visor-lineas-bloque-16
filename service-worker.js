@@ -1,5 +1,5 @@
-const CACHE = 'visortubos-84fcff37c8';
-const APP_FILES = ['./', './index.html', './styles.css?v=84fcff37c8', './app.js?v=84fcff37c8', './route-data.js', './manifest.webmanifest', './vendor/leaflet.css', './vendor/leaflet.js', './icons/app-icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE = 'visortubos-code-names-20260909';
+const APP_FILES = ['./', './index.html', './styles.css?v=84fcff37c8', './app.js?v=code-names-20260909', './route-data.js', './manifest.webmanifest', './vendor/leaflet.css', './vendor/leaflet.js', './icons/app-icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_FILES)).then(() => self.skipWaiting()));
