@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1628">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="visor-tuberias-bloque-16">
+  <title>visor-tuberias-bloque-16</title>
+  <meta name="description" content="Mapa de tuberías, estaciones de prueba e información técnica del Bloque 16.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/app-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="styles.css?v=84fcff37c8">
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo" aria-hidden="true">⌁</div>
+    <div><small>PETROENERGY · EP PETROECUADOR</small><h1>visor-tuberias-bloque-16</h1></div>
+    <button class="install" id="install-app" hidden>Instalar app</button>
+    <p class="ready"><i></i> Datos KMZ y Excel cargados</p>
+  </header>
+
+  <main class="workspace">
+    <aside class="sidebar">
+      <div class="sidebar-title"><div><small>Rutas disponibles</small><h2>Selecciona una línea</h2></div><b id="route-count">0</b></div>
+      <nav id="route-list" aria-label="Líneas disponibles"></nav>
+      <div class="note"><b>⌖</b><p><strong>Referencia de campo</strong><span>Selecciona una EP para consultar sus coordenadas.</span></p></div>
+    </aside>
+
+    <section class="map-wrap" aria-label="Mapa del ducto seleccionado">
+      <div id="map"></div>
+      <label class="mobile-picker"><small>Línea activa</small><select id="route-select" aria-label="Seleccionar línea"></select></label>
+      <article class="route-summary" id="route-summary">
+        <i id="route-icon">≋</i><div><small id="route-service">Agua</small><h2 id="route-name">CAPIRON → BOGI</h2></div>
+        <dl><div><dt>Recorrido</dt><dd id="route-length">—</dd></div><div><dt>Estaciones EP</dt><dd id="station-count">—</dd></div></dl>
+      </article>
+      <div class="tools" aria-label="Controles del mapa">
+        <button id="zoom-in" title="Acercar" aria-label="Acercar">＋</button>
+        <button id="zoom-out" title="Alejar" aria-label="Alejar">−</button>
+        <hr>
+        <button id="fit-route" title="Mostrar línea completa" aria-label="Mostrar línea completa">⌖</button>
+        <button id="line-info" title="Información de la línea" aria-label="Información de la línea">ⓘ</button>
+        <button id="toggle-layer" title="Cambiar fondo" aria-label="Cambiar fondo">▦</button>
+      </div>
+      <div class="legend"><span><i class="line-sample"></i>Ducto</span><span><i class="point-sample"></i>Estación EP</span></div>
+      <button class="locate" id="locate">⌾ <span>Mi ubicación</span></button>
+      <p class="toast" id="toast" role="status" hidden></p>
+    </section>
+  </main>
+
+  <dialog id="station-dialog">
+    <button class="dialog-close" id="dialog-close" aria-label="Cerrar">×</button>
+    <div class="dialog-head"><i>⌖</i><small>Estación de prueba</small><h2 id="station-name"></h2><p id="station-route"></p></div>
+    <div class="dialog-body">
+      <section class="utm-card" aria-label="Coordenadas UTM WGS84"><small>UTM · WGS84</small><div><span>Zona<b id="station-zone"></b></span><span>Este (m)<b id="station-east"></b></span><span>Norte (m)<b id="station-north"></b></span></div></section>
+      <div class="coords geographic"><span>Latitud<b id="station-lat"></b></span><span>Longitud<b id="station-lng"></b></span></div>
+      <p id="station-description"></p><button id="station-center">⌾ Centrar en el mapa</button>
+    </div>
+  </dialog>
+
+  <dialog id="line-dialog">
+    <button class="dialog-close" id="line-close" aria-label="Cerrar">×</button>
+    <div class="dialog-head"><i>ⓘ</i><small>Información de la línea</small><h2 id="line-name"></h2><p id="line-code"></p></div>
+    <div class="dialog-body"><div class="line-info-list" id="line-info-list"></div></div>
+  </dialog>
+
+  <dialog id="install-dialog" class="install-dialog">
+    <button class="dialog-close" id="install-close" aria-label="Cerrar">×</button>
+    <div class="install-copy"><b>Instalar en iPhone o iPad</b><p>Abre esta página en Safari, pulsa Compartir y elige “Agregar a inicio”.</p></div>
+  </dialog>
+
+  <script src="vendor/leaflet.js"></script>
+  <script src="route-data.js"></script>
+  <script src="app.js?v=84fcff37c8"></script>
+</body>
+</html>
