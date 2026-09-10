@@ -15,6 +15,8 @@
   let satellite = true;
   let installPrompt;
 
+  const lineName = route => String(route?.code || '').replace(/\.kmz$/i, '').trim();
+
   document.querySelector('#route-count').textContent = routes.length;
 
   if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) document.documentElement.classList.add('standalone');
@@ -103,7 +105,7 @@
     chosenStation = station;
     const utm = toUtm(station.lat, station.lng);
     document.querySelector('#station-name').textContent = station.name;
-    document.querySelector('#station-route').textContent = active.code;
+    document.querySelector('#station-route').textContent = lineName(active);
     document.querySelector('#station-lat').textContent = station.lat.toFixed(6);
     document.querySelector('#station-lng').textContent = station.lng.toFixed(6);
     document.querySelector('#station-zone').textContent = utm.zone;
@@ -115,17 +117,17 @@
   }
 
   function showLineInfo() {
-    document.querySelector('#line-name').textContent = active.code;
-    document.querySelector('#line-code').textContent = `Código: ${active.code}`;
+    document.querySelector('#line-name').textContent = lineName(active);
     const container = document.querySelector('#line-info-list');
     container.replaceChildren();
-    if (!active.info?.length) {
+    const fields = active.info?.filter(field => String(field.label).trim().toLowerCase() !== 'code') || [];
+    if (!fields.length) {
       const empty = document.createElement('p');
       empty.className = 'line-empty';
       empty.textContent = 'No hay una fila asociada para esta línea en el archivo Excel.';
       container.append(empty);
     } else {
-      active.info.forEach(field => {
+      fields.forEach(field => {
         const item = document.createElement('div');
         const label = document.createElement('small');
         const value = document.createElement('strong');
@@ -153,7 +155,7 @@
       marker.on('click', () => showStation(station));
     });
     if (group.getLayers().length) map.fitBounds(group.getBounds(), { padding: [42, 42], maxZoom: 16 });
-    document.querySelector('#route-name').textContent = active.code;
+    document.querySelector('#route-name').textContent = lineName(active);
     document.querySelector('#route-service').textContent = active.service;
     document.querySelector('#route-icon').textContent = active.service === 'Agua' ? '≋' : '⌁';
     document.querySelector('#route-length').textContent = `${length(active.lines).toFixed(2)} km`;
@@ -174,13 +176,13 @@
     const service = document.createElement('small');
     const dot = document.createElement('i');
     symbol.className = 'symbol'; symbol.textContent = '⌁';
-    title.textContent = route.code; service.textContent = route.service; dot.className = 'dot';
+    title.textContent = lineName(route); service.textContent = route.service; dot.className = 'dot';
     copy.append(title, service); button.append(symbol, copy, dot);
     button.addEventListener('click', () => renderRoute(route.id));
     list.append(button);
     const option = document.createElement('option');
     option.value = route.id;
-    option.textContent = `${route.code} · ${route.service}`;
+    option.textContent = `${lineName(route)} · ${route.service}`;
     select.append(option);
   });
   select.addEventListener('change', event => renderRoute(event.target.value));
